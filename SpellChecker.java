@@ -43,22 +43,20 @@ public class SpellChecker {
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		 String mostSimilar = word; 
+		int min = levenshtein(word, dictionary[0]);
+		String test = dictionary[0];
 
-		for (int j = 0; j <= threshold; j++) {
-			for (int i = 0; i < dictionary.length; i++) {
-			String candidate = dictionary[i];
-			int distance = levenshtein(word.toLowerCase(), candidate);
-	
-				if (distance <= j && distance < levenshtein(word.toLowerCase(), mostSimilar)) {
-					mostSimilar = candidate;
-				}
+		for (int i = 1; i < dictionary.length; i++) {
+			int mostSimilar = levenshtein(word, dictionary[i]);
+			
+			if (mostSimilar < min) {
+				min = mostSimilar;
+				test = dictionary[i];
 			}
-	}
-		if (levenshtein(word.toLowerCase(), mostSimilar) > threshold) {
-		return word;
 		}
-		return mostSimilar;
+		if (min > threshold) {
+			return word;
+		}
+		return test;
 	}
 }
-
